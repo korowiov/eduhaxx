@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_29_231453) do
+ActiveRecord::Schema.define(version: 2021_01_30_154722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,6 +22,25 @@ ActiveRecord::Schema.define(version: 2021_01_29_231453) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_education_levels_on_slug"
+  end
+
+  create_table "question_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "quiz_question_id"
+    t.string "content"
+    t.boolean "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["quiz_question_id"], name: "index_question_options_on_quiz_question_id"
+  end
+
+  create_table "quiz_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "quiz_id"
+    t.string "content"
+    t.string "question_type", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_type"], name: "index_quiz_questions_on_question_type"
+    t.index ["quiz_id"], name: "index_quiz_questions_on_quiz_id"
   end
 
   create_table "resource_subjects", force: :cascade do |t|
