@@ -17,6 +17,7 @@ module Admin
           field :subjects do
             inline_add false
           end
+          field :tags
           field :quiz_questions
         end
 
@@ -29,6 +30,7 @@ module Admin
           field :subjects do
             inline_add false
           end
+          field :tags
           field :quiz_questions
         end
 

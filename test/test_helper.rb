@@ -1,13 +1,21 @@
+require 'webmock/minitest'
+require 'minitest/autorun'
+require 'mocha/minitest'
+
 ENV['RAILS_ENV'] ||= 'test'
-require_relative "../config/environment"
-require "rails/test_help"
+require_relative '../config/environment'
+require 'rails/test_help'
+Dir['./test/support/**/*.rb'].each { |f| require f }
+
+Minitest.backtrace_filter = Minitest::BacktraceFilter.new
 
 class ActiveSupport::TestCase
-  # Run tests in parallel with specified workers
-  parallelize(workers: :number_of_processors)
+  extend MiniTest::Spec::DSL
+  include FactoryBot::Syntax::Methods
 
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
+  # parallelize(workers: :number_of_processors)
 
-  # Add more helper methods to be used by all tests here...
+  def json_response
+    ActiveSupport::JSON.decode @response.body
+  end
 end

@@ -8,14 +8,6 @@ module Slugable
 
   private
 
-  def generate_slug(counter)
-    ''.tap do |elements|
-      elements << parent_node.slug + ' ' if parent_node.present?
-      elements << title + ' '
-      elements << counter if counter.positive?
-    end.parameterize
-  end
-
   def set_slug
     if should_set_slug?
       counter = 0
@@ -30,7 +22,21 @@ module Slugable
     end
   end
 
+  def generate_slug(counter)
+    ''.tap do |elements|
+      if defined? parent_node
+        elements << parent_node.slug + ' ' if parent_node.present?
+      end
+      elements << if defined? title
+                    title + ' '
+                  else
+                    label + ' '
+                  end
+      elements << counter if counter.positive?
+    end.parameterize
+  end
+
   def should_set_slug?
-    new_record? || node_parent_id_changed?
+    new_record? || (defined?(parent_node) && node_parent_id_changed?)
   end
 end

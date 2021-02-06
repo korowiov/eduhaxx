@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ResourceTest < ActiveSupport::TestCase
+class ResourceTagTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
