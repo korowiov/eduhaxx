@@ -4,7 +4,7 @@ module ApiTests
   module ResourcesControllerTests
     class BaseQuizzesTest < BaseTest
       let(:quizzes) do
-        build_list(
+        create_list(
           :quiz,
           10,
           :published,

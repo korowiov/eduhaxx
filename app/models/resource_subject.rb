@@ -1,4 +1,4 @@
 class ResourceSubject < ApplicationRecord
-  belongs_to :resource
   belongs_to :subject
+  belongs_to :subjectable, polymorphic: true
 end

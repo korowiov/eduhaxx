@@ -10,7 +10,7 @@ module Resources
     end
 
     def call
-      scoped = initial_scope.includes(:author, :subjects, :education_level)
+      scoped = initial_scope.includes(:subjects, :education_level)
       scoped = filter_by_education_level(scoped)
       scoped = filter_by_subject(scoped)
       scoped = limit_offset(scoped)
