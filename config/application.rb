@@ -41,5 +41,10 @@ module Eduhaxx
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    config.middleware.use Warden::Manager do |manager|
+      manager.default_strategies %i[token credentials]
+      manager.failure_app = Api::UnauthorizedController
+    end
   end
 end

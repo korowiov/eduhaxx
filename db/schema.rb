@@ -10,11 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_101127) do
+ActiveRecord::Schema.define(version: 2021_02_07_092752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "nickname", null: false
+    t.string "email", null: false
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.string "password_digest"
+    t.string "recovery_password_digest"
+    t.integer "sign_in_count", default: 0, null: false
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_accounts_on_email"
+    t.index ["nickname"], name: "index_accounts_on_nickname"
+  end
+
+  create_table "authentication_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.string "token", null: false
+    t.string "sign_in_ip"
+    t.boolean "expired", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_authentication_tokens_on_account_id"
+    t.index ["token"], name: "index_authentication_tokens_on_token"
+  end
 
   create_table "education_levels", force: :cascade do |t|
     t.string "title", null: false
@@ -126,4 +152,5 @@ ActiveRecord::Schema.define(version: 2021_02_06_101127) do
     t.index ["slug"], name: "index_tags_on_slug"
   end
 
+  add_foreign_key "authentication_tokens", "accounts"
 end

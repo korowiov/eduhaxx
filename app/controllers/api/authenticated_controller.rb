@@ -1,9 +1,9 @@
 module Api
   class AuthenticatedController < BaseApiController
-    include DeviseTokenAuth::Concerns::SetUserByToken
+    include Api::Authentication::HelperMethods
     include Pundit
 
-    before_action :authenticate_account!
+    before_action :authenticate!
 
     protected
 

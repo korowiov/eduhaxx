@@ -38,7 +38,7 @@ module Api
 
     def resource_serializer
       case resource_record
-      when Quiz then QuizSerializer
+      when Quiz then ResourceSerializer
       end
     end
   end
