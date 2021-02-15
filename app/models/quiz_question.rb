@@ -11,4 +11,6 @@ class QuizQuestion < ApplicationRecord
   belongs_to :quiz, inverse_of: :quiz_questions
 
   accepts_nested_attributes_for :question_options, allow_destroy: true
+
+  scope :random_order, -> { order(Arel.sql('RANDOM()')) }
 end

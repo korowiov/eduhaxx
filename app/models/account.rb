@@ -5,4 +5,5 @@ class Account < ApplicationRecord
   has_secure_password :recovery_password, validations: false
 
   has_many :authentication_tokens
+  has_many :quiz_sessions
 end

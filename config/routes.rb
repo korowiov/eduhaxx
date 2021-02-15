@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     resources :resources, only: %i[index show]
     resource :session, only: %i[create show]
     resources :subjects, only: %i[index]
+    resources :quiz_sessions, only: %i[create show]
   end
 end

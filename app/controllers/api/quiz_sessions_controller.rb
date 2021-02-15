@@ -1,23 +1,44 @@
 module Api
   class QuizSessionsController < AuthenticatedController
     def create
-      @quiz_session = QuizSessions::Create.new(
-        account: current_account,
-        quiz: quiz
-      ).call
+      action =
+        QuizSessions::Create.new(
+          account: current_account,
+          quiz: quiz
+        )
+
+      if action.call
+        render_object(
+          action.resource,
+          QuizSessionSerializer,
+          only: :id
+        )
+      end
+    end
+
+    def show
+      authorize quiz_session
 
       render_object(
-        @quiz_session,
-        QuizSessionSerializer,
-        only: :id
+        quiz_session,
+        QuizSessionSerializer
       )
     end
 
     private
 
     def quiz
-      Quiz.published
-          .find(params[:quiz_id])
+      ResourceRepository.new(Quiz)
+                        .published_by_id!(
+                          params[:quiz_id]
+                        )
+    end
+
+    def quiz_session
+      QuizSessionRepository.new
+                           .find_active!(
+                             params[:id]
+                           )
     end
   end
 end

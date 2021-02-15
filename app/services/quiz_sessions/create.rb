@@ -1,6 +1,7 @@
 module QuizSessions
-  class Create
-    include Patterns::Services
+  class Create < Patterns::Action
+    set_form_klass QuizSessions::CreateForm
+    set_model_klass QuizSession
 
     def initialize(account:, quiz:, opts: {})
       @account = account
@@ -9,7 +10,11 @@ module QuizSessions
     end
 
     def call
-      quiz_session.tap(&:save!)
+      !!existing_resource || super
+    end
+
+    def resource
+      existing_resource || form.model
     end
 
     private
@@ -20,17 +25,17 @@ module QuizSessions
       {}.tap do |param|
         param[:account] = account
         param[:quiz] = quiz
-        param[:configuration] = quiz_session_configuration
       end
     end
 
-    def quiz_session
-      @quiz_session ||=
-        QuizSession.new(params)
-    end
-
-    def quiz_session_configuration
-      QuizSessions::Configuration::Build.call(quiz: quiz)
+    def existing_resource
+      @existing_resource ||=
+        QuizSessionRepository
+        .new
+        .find_by_attrs(
+          account: account,
+          quiz: quiz
+        )
     end
   end
 end
