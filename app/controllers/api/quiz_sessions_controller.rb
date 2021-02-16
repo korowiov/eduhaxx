@@ -2,7 +2,7 @@ module Api
   class QuizSessionsController < AuthenticatedController
     def create
       action =
-        QuizSessions::Create.new(
+        ::QuizSessions::Create.new(
           account: current_account,
           quiz: quiz
         )

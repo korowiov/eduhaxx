@@ -1,8 +1,8 @@
 class QuizQuestionSerializer < Patterns::Serializer
   attributes :id, :content, :question_type
-  has_many :quiz_question_options
+  has_many :question_options
 
-  class QuizQuestionOptionSerializer < Patterns::Serializer
+  class QuestionOptionSerializer < Patterns::Serializer
     attributes :id, :content
   end
 end
