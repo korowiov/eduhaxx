@@ -8,8 +8,9 @@ Rails.application.routes.draw do
     resources :subjects, only: %i[index]
     resources :quiz_sessions, only: %i[create show] do
       member do
+        post '/finish', to: 'quiz_sessions#edit'
         get '/question/:question_number', to: 'quiz_sessions/quiz_questions#show'
-        post '/question/:question_number/answer', to: 'quiz_sessions/quiz_question_answers#create'
+        post '/question/:question_number/answer', to: 'quiz_sessions/question_answers#create'
       end
     end
   end

@@ -25,6 +25,18 @@ module Api
       )
     end
 
+    def edit
+      authorize quiz_session
+
+      action =
+        ::QuizSessions::Edit.new(
+          quiz_session: quiz_session
+        )
+
+      action.call
+      head :ok
+    end
+
     private
 
     def quiz
